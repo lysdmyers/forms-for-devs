@@ -29,14 +29,17 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build (static export)
+      - name: Build
         run: npm run build
 
-      - name: Verify export output
-        run: ls -la && ls -la out
-
-      - name: Build + Export
-        run: npm run build && npm run export
+      - name: Debug build output
+        run: |
+         echo "Repo root:"
+         ls -la
+         echo "out folder:"
+         ls -la out || true
+         echo ".next folder:"
+         ls -la .next || true
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
