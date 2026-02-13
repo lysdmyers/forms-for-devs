@@ -1,0 +1,36 @@
+{
+  "id": "basic-contact",
+  "title": "Basic Contact Form",
+  "description": "A simple contact form for leads or customer messages.",
+  "version": 1,
+  "fields": [
+    {
+      "id": "f1",
+      "name": "fullName",
+      "label": "Full name",
+      "type": "text",
+      "required": true,
+      "placeholder": "Jane Doe",
+      "rules": { "minLength": 2, "maxLength": 80 }
+    },
+    {
+      "id": "f2",
+      "name": "email",
+      "label": "Email",
+      "type": "email",
+      "required": true,
+      "placeholder": "jane@example.com"
+    },
+    {
+      "id": "f3",
+      "name": "message",
+      "label": "Message",
+      "type": "textarea",
+      "required": true,
+      "placeholder": "How can we help?",
+      "rules": { "minLength": 10, "maxLength": 1000 }
+    }
+  ],
+  "createdAtISO": "2026-02-04T00:00:00.000Z",
+  "updatedAtISO": "2026-02-04T00:00:00.000Z"
+}
