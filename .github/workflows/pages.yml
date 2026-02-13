@@ -32,6 +32,12 @@ jobs:
       - name: Build (static export)
         run: npm run build
 
+      - name: Verify export output
+        run: ls -la && ls -la out
+
+      - name: Build + Export
+        run: npm run build && npm run export
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
