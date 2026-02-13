@@ -31,7 +31,7 @@ export default function HomePage() {
       <div className="mt-10 grid gap-4 sm:grid-cols-3">
         {/* Studio route — planned unified interface */}
         <Link
-          href="/studio"
+          href="/studio/"
           className="rounded-lg border bg-white p-5 transition hover:shadow-sm hover:bg-gray-50"
         >
           <h2 className="font-medium text-gray-800">Studio</h2>
@@ -42,7 +42,7 @@ export default function HomePage() {
 
         {/* Export route — current JSON/schema output interface */}
         <Link
-          href="/export"
+          href="/export/"
           className="rounded-lg border bg-white p-5 transition hover:shadow-sm hover:bg-gray-50"
         >
           <h2 className="font-medium text-gray-800">Export</h2>

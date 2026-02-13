@@ -51,14 +51,14 @@ export default function PreviewPage() {
         <div className="flex gap-3">
           {/* Use Next.js Link for client-side navigation */}
           <Link
-            href="/builder"
+            href="/builder/"
             className="rounded-md border bg-white px-4 py-2 hover:bg-gray-50"
           >
             Builder
           </Link>
 
           <Link
-            href="/export"
+            href="/export/"
             className="rounded-md border bg-white px-4 py-2 hover:bg-gray-50"
           >
             Export

@@ -6,6 +6,7 @@ import basicContact from "@/templates/basic-contact.json";
 import { loadFormFromStorage } from "@/lib/storage";
 import { generateJsonSchema } from "@/lib/schema-generator";
 import { generateReactTsComponent } from "@/lib/exporters/react-ts";
+import Link from "next/link";
 
 /**
  * ExportFormat
@@ -126,12 +127,12 @@ export default function ExportPage() {
         </div>
 
         <div className="flex flex-wrap gap-3">
-          <a href="/builder" className="rounded-md border bg-white px-4 py-2 hover:bg-gray-50">
+          <Link href="/builder/" className="rounded-md border bg-white px-4 py-2 hover:bg-gray-50">
             Builder
-          </a>
-          <a href="/preview" className="rounded-md border bg-white px-4 py-2 hover:bg-gray-50">
+          </Link>
+          <Link href="/preview/" className="rounded-md border bg-white px-4 py-2 hover:bg-gray-50">
             Preview
-          </a>
+          </Link>
 
           <button
             type="button"

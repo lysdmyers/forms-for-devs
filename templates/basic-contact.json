@@ -1,13 +1,13 @@
 {
   "id": "basic-contact",
-  "title": "Basic Contact Form",
+  "title": "Contact Form",
   "description": "A simple contact form for leads or customer messages.",
   "version": 1,
   "fields": [
     {
       "id": "f1",
       "name": "fullName",
-      "label": "Full name",
+      "label": "Full Name",
       "type": "text",
       "required": true,
       "placeholder": "Jane Doe",
