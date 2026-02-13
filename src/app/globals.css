@@ -1,0 +1,238 @@
+@import "tailwindcss";
+
+/* ============================================================
+   Root Design Tokens
+   ------------------------------------------------------------
+   All core UI values are defined as CSS variables.
+
+   Why:
+   - Enables light/dark theming
+   - Keeps Tailwind utility layer clean
+   - Makes future branding/theme swaps trivial
+   - Centralizes visual system decisions
+   ============================================================ */
+
+:root {
+  /* Enables automatic light/dark form control styling */
+  color-scheme: light dark;
+
+  /* ---------- SURFACES (Light Mode) ---------- */
+  --background: #f7f8fb;
+  --surface: #ffffff;
+  --surface-2: #eef2f7;
+  --border: #c7cfdd;
+
+  /* ---------- TEXT ---------- */
+  --text: #0a1020;
+  --text-muted: #1f2a3a;
+  --text-heading: #050a14;
+
+  /* Focus ring color (accessibility critical) */
+  --ring: #1d4ed8;
+
+  /* ---------- BUTTONS (Primary) ---------- */
+  --button-bg: #0a1020;
+  --button-fg: #ffffff;
+  --button-border: #0a1020;
+  --button-hover: #050a14;
+
+  /* ---------- BUTTONS (Ghost) ---------- */
+  --ghost-bg: var(--surface);
+  --ghost-fg: var(--text);
+  --ghost-border: #b7c1d3;
+  --ghost-hover: var(--surface-2);
+
+  /* Semantic color for destructive actions */
+  --danger: #b91c1c;
+
+  /* Fonts injected via next/font */
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+/* ============================================================
+   Global Base Styles
+   ============================================================ */
+
+html {
+  /* Smooth scroll enhances navigation UX */
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--text);
+
+  /* System fallback stack ensures resilience */
+  font-family: var(
+    --font-sans,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    Segoe UI,
+    Roboto,
+    Arial
+  );
+
+  /* Improve text rendering across platforms */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ============================================================
+   Accessibility Enhancements
+   ============================================================ */
+
+/* Strong visible focus for keyboard users (WCAG compliance) */
+:focus-visible {
+  outline: 3px solid var(--ring);
+  outline-offset: 3px;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* ============================================================
+   Input Behavior Tweaks
+   ------------------------------------------------------------
+   Reduces placeholder noise once a user interacts.
+   ============================================================ */
+
+/* Hide placeholder on focus */
+.ffd-input:focus::placeholder,
+.ffd-input:focus-visible::placeholder {
+  opacity: 0;
+}
+
+/* Smooth transition when fading placeholder */
+.ffd-input::placeholder {
+  transition: opacity 120ms ease;
+}
+
+/* ============================================================
+   UI Primitives (Component Layer)
+   ------------------------------------------------------------
+   These are semantic building blocks used throughout
+   the application (Builder, Preview, Export).
+   ============================================================ */
+
+@layer components {
+  /* Headings */
+  .ffd-heading {
+    color: var(--text-heading);
+    letter-spacing: -0.01em;
+  }
+
+  /* Muted text */
+  .ffd-muted {
+    color: var(--text-muted);
+  }
+
+  /* Card container */
+  .ffd-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+  }
+  .ffd-page {
+    padding: 24px;
+  }
+
+  .ffd-section-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  .ffd-divider {
+    border-top: 1px solid var(--border);
+  }
+
+  /* Input field */
+  .ffd-input {
+    background: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 12px;
+  }
+
+  /* Placeholder color tone */
+  .ffd-input::placeholder {
+    color: color-mix(in oklab, var(--text-muted) 70%, transparent);
+  }
+
+  /* ---------- Primary Button ---------- */
+  .ffd-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 0.875rem;
+    font-weight: 650;
+
+    background: var(--button-bg);
+    color: var(--button-fg);
+    border: 1px solid var(--button-border);
+  }
+
+  .ffd-btn:hover {
+    background: var(--button-hover);
+  }
+
+  /* ---------- Ghost Button ---------- */
+  .ffd-btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 0.875rem;
+    font-weight: 650;
+
+    background: var(--ghost-bg);
+    color: var(--ghost-fg);
+    border: 1px solid var(--ghost-border);
+  }
+
+  .ffd-btn-ghost:hover {
+    background: var(--ghost-hover);
+  }
+
+  /* ---------- Destructive Button ---------- */
+  .ffd-btn-danger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+    padding: 8px 12px;
+    font-size: 0.875rem;
+    font-weight: 650;
+
+    background: var(--ghost-bg);
+    color: var(--ghost-fg);
+    border: 1px solid var(--ghost-border);
+  }
+
+  .ffd-btn-danger:hover {
+    background: color-mix(in oklab, var(--danger) 18%, var(--ghost-bg));
+  }
+}
