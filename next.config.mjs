@@ -1,8 +1,7 @@
-import type { NextConfig } from "next";
-
 const repo = "forms-for-devs";
 
-const nextConfig: NextConfig = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   output: "export",
   trailingSlash: true,
   basePath: `/${repo}`,
