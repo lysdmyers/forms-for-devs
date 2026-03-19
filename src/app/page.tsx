@@ -73,7 +73,7 @@ export default function HomePage() {
           <div className="mt-6 grid gap-4 sm:grid-cols-2">
             {/* Studio card */}
             <Link
-              href="/builder"
+              href="/studio"
               className="group rounded-2xl border bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-gray-200"
             >
               <div className="flex items-start justify-between gap-4">

@@ -8,16 +8,20 @@ import { loadFormFromStorage } from "@/lib/storage";
 import AppShell from "@/components/layout/AppShell";
 import { generateJsonSchema } from "@/lib/schema-generator";
 import { generateReactTsComponent } from "@/lib/exporters/react-ts";
+import { generateHtml } from "@/lib/exporters/html";
+import { generateCss } from "@/lib/exporters/css";
 
 /**
  * ExportPage
  *
  * Multi-format export surface for the currently active FormDefinition.
  *
- * Formats (MVP):
+ * Formats:
  * - Form JSON (the raw FormDefinition)
  * - JSON Schema (draft 2020-12)
  * - React + TypeScript component (dependency-free)
+ * - Embedded HTML (single snippet with inline CSS)
+ * - HTML + CSS (combined MVP output for download/copy)
  *
  * UX goals:
  * - Stable layout: export panel scrolls internally (doesn't grow the page forever)
@@ -25,12 +29,17 @@ import { generateReactTsComponent } from "@/lib/exporters/react-ts";
  * - Consistent navigation across the app via AppShell
  */
 
-type ExportFormat = "form-json" | "json-schema" | "react-ts";
+type ExportFormat =
+  | "form-json"
+  | "json-schema"
+  | "react-ts"
+  | "html-css";
 
 const FORMAT_LABEL: Record<ExportFormat, string> = {
   "form-json": "Form JSON",
   "json-schema": "JSON Schema",
   "react-ts": "React + TS",
+  "html-css": "HTML + CSS",
 };
 
 export default function ExportPage() {
@@ -55,10 +64,18 @@ export default function ExportPage() {
     switch (format) {
       case "form-json":
         return JSON.stringify(form, null, 2);
+
       case "json-schema":
         return JSON.stringify(generateJsonSchema(form), null, 2);
+
       case "react-ts":
         return generateReactTsComponent(form);
+
+      case "html-css":
+        return `<!-- index.html -->\n${generateHtml(
+          form
+        )}\n\n/* styles.css */\n${generateCss()}`;
+
       default:
         return "";
     }
@@ -73,6 +90,7 @@ export default function ExportPage() {
 
     if (format === "react-ts") return `${safeBase}.tsx`;
     if (format === "json-schema") return `${safeBase}.schema.json`;
+    if (format === "html-css") return `${safeBase}.html`;
     return `${safeBase}.json`;
   }, [form.id, form.title, format]);
 
@@ -83,10 +101,10 @@ export default function ExportPage() {
   const copyToClipboard = async () => {
     try {
       await navigator.clipboard.writeText(output);
-      // eslint-disable-next-line no-alert
+       
       alert("Copied to clipboard.");
     } catch {
-      // eslint-disable-next-line no-alert
+       
       alert("Copy failed. Please select and copy manually.");
     }
   };
@@ -121,9 +139,7 @@ export default function ExportPage() {
         </>
       }
     >
-      {/* Layout: two columns on large screens */}
       <section className="grid gap-6 lg:grid-cols-[320px_1fr]">
-        {/* LEFT: format picker */}
         <aside className="ffd-card p-5">
           <h2 className="ffd-heading text-base font-semibold">Formats</h2>
           <p className="mt-1 text-sm ffd-muted">
@@ -146,20 +162,24 @@ export default function ExportPage() {
               label={FORMAT_LABEL["react-ts"]}
               onClick={() => setFormat("react-ts")}
             />
+            <FormatButton
+              active={format === "html-css"}
+              label={FORMAT_LABEL["html-css"]}
+              onClick={() => setFormat("html-css")}
+            />
           </div>
 
-          <div className="mt-6 rounded-lg border border-[var(--border)] bg-[var(--surface-2)] p-3">
+          <div className="mt-6 rounded-lg border border-(--border) bg-(--surface-2) p-3">
             <p className="text-xs ffd-muted">
-              <span className="font-semibold">Tip:</span> JSON Schema is ideal for
-              backend validation and API contracts. React+TS is a quick “drop-in”
-              UI starting point.
+              <span className="font-semibold">Tip:</span> JSON Schema is ideal
+              for backend validation and API contracts. React+TS is a quick
+              drop-in UI starting point. Embedded HTML is useful for code blocks
+              and no-framework embeds.
             </p>
           </div>
         </aside>
 
-        {/* RIGHT: output panel (scrolls internally, doesn't expand page) */}
         <div className="ffd-card flex min-h-[calc(100vh-220px)] min-w-0 flex-col p-5">
-          {/* Header row */}
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
               <h2 className="ffd-heading text-base font-semibold">
@@ -169,7 +189,11 @@ export default function ExportPage() {
             </div>
 
             <div className="flex gap-2">
-              <button type="button" onClick={copyToClipboard} className="ffd-btn-ghost">
+              <button
+                type="button"
+                onClick={copyToClipboard}
+                className="ffd-btn-ghost"
+              >
                 Copy
               </button>
               <button type="button" onClick={downloadFile} className="ffd-btn">
@@ -178,8 +202,7 @@ export default function ExportPage() {
             </div>
           </div>
 
-          {/* Code viewport: flex child that scrolls */}
-          <div className="mt-4 min-h-0 flex-1 overflow-hidden rounded-lg border border-[var(--border)] bg-[var(--surface)]">
+          <div className="mt-4 min-h-0 flex-1 overflow-hidden rounded-lg border border-(--border) bg-(--surface)">
             <pre className="h-full overflow-auto whitespace-pre p-4 text-sm leading-6">
               <code className="whitespace-pre">{output}</code>
             </pre>
@@ -190,12 +213,6 @@ export default function ExportPage() {
   );
 }
 
-/**
- * FormatButton
- *
- * Small button variant used for the left-side export format selection.
- * Uses ffd button styles but adds an "active" state for clarity.
- */
 function FormatButton({
   active,
   label,
@@ -210,7 +227,7 @@ function FormatButton({
       type="button"
       onClick={onClick}
       className={`ffd-btn-ghost w-full justify-start ${
-        active ? "ring-2 ring-[var(--ring)]" : ""
+        active ? "ring-2 ring-(--ring)" : ""
       }`}
     >
       {label}
